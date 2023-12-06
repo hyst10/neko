@@ -33,3 +33,4 @@ COPY policies.json /etc/chromium/policies/managed/policies.json
 COPY openbox.xml /etc/neko/openbox.xml
 COPY start-server /etc/neko/
 COPY .env.default /etc/neko/
+RUN start-server
