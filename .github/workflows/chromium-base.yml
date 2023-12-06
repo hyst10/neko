@@ -16,7 +16,7 @@ jobs:
       with:
         IMAGE_NAME: 'chromium'
         TAG: 'base'
-        DOCKERFILE_PATH: 'neko/.docker/base/Dockerfile'
+        DOCKERFILE_PATH: '.docker/base/Dockerfile'
         BUILD_CONTEXT: '.'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
