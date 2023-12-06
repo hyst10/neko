@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=hyst10/neko:base
+ARG BASE_IMAGE=ghcr.io/hyst10/neko/chromium:77d08b8fb457
 FROM $BASE_IMAGE
 
 #
