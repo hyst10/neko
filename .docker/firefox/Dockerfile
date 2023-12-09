@@ -1,20 +1,23 @@
-ARG BASE_IMAGE=m1k1o/neko:base
+ARG BASE_IMAGE=hyst10/neko:base
 FROM $BASE_IMAGE
 
-ARG SRC_URL="https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=en-US"
+#ARG SRC_URL="https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=en-US"
 
 #
 # install firefox
-RUN set -eux; apt-get update; \
+RUN set -eux; \
+    echo "deb http://ftp.de.debian.org/debian sid main" >> /etc/apt/sources.list; \
+    apt-get update; \
     apt-get install -y --no-install-recommends openbox \
-    xz-utils bzip2 libgtk-3-0 libdbus-glib-1-2; \
+    xz-utils bzip2 firefox; \
+    #xz-utils bzip2 libgtk-3-0 libdbus-glib-1-2 firefox; 
     #
     # fetch latest release
-    wget -O /tmp/firefox-setup.tar.bz2 "${SRC_URL}"; \
-    mkdir /usr/lib/firefox; \
-    tar -xjf /tmp/firefox-setup.tar.bz2 -C /usr/lib; \
-    rm -f /tmp/firefox-setup.tar.bz2; \
-    ln -s /usr/lib/firefox/firefox /usr/bin/firefox; \
+    #wget -O /tmp/firefox-setup.tar.bz2 "${SRC_URL}"; \
+    #mkdir /usr/lib/firefox; \
+    #tar -xjf /tmp/firefox-setup.tar.bz2 -C /usr/lib; \
+    #rm -f /tmp/firefox-setup.tar.bz2; \
+    #ln -s /usr/lib/firefox/firefox /usr/bin/firefox; \
     #
     # create a profile directory
     mkdir -p /home/neko/.mozilla/firefox/profile.default/extensions; \
