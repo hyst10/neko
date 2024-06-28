@@ -1,0 +1,89 @@
+【docker】属于你的远程浏览器 可多人协作| Neko安装与基本使用
+夜梦星尘
+夜梦星尘​
+踏着梦 走过时光
+1 人赞同了该文章
+​
+目录
+收起
+1. 前言
+2. 准备
+3. 部署
+4. 反向代理
+5. 使用
+1. 前言
+夜梦TECH同步更新地址：【docker】属于你的远程浏览器 可多人协作| Neko安装与基本使用
+
+欢迎来到Neko，这是一个在Docker中运行并使用WebRTC技术的自托管虚拟浏览器。Neko是一个强大的工具，允许您在虚拟环境中运行一个功能齐全的浏览器，让您能够从任何地方安全和私密地访问互联网。使用Neko，您可以浏览网页、运行应用程序和执行其他任务，就像在普通浏览器上一样，所有这些都在一个安全和隔离的环境中进行。无论您是希望测试web应用程序的开发人员，还是寻求安全浏览体验的注重隐私的用户，或者只是想利用虚拟浏览器的便利性和灵活性的人，Neko都是完美的解决方案。
+项目GitHub：m1k1o/neko: A self hosted virtual browser that runs in docker and uses WebRTC.
+
+项目doc：Getting Started (m1k1o.net)
+
+配置需求：
+
+分辨率	CPU Cores	内存	推荐意见
+1024×576@30	2	2gb	一般
+1280x720@30	4	3gb	可以
+1280x720@30	6	4gb	推荐
+1280x720@30	8	4gb+	最佳
+夜梦这里使用的服务器配置：2Cores 2GB Ubuntu22.04。如果只是用来浏览网页的话，CPU和内存的占用不会太高，1C1G加个1Gswap就够了。如果你要看视频之类的，可能需要更高的配置，推荐2C以上。
+
+2. 准备
+夜梦这里使用的是雨云的服务器，长期全场景九折 + 首月五折优惠链接：https://www.rainyun.com/
+
+更多服务器推荐请看：服务器推荐 | 部分服务器测评
+
+此项目强烈推荐使用域名并开启SSL，否则可能会出现未知错误。通过 namesilo 注册域名可以使用 1 美元优惠码：yemeng。
+
+在开始部署之前，你需要安装 docker 和 docker-compose。具体安装见：【docker】在服务器上安装 docker/docker-compose
+
+你可以为服务器添加些swap：手动添加SWAP
+
+3. 部署
+创建文件夹：
+
+mkdir -p /root/data/docker_data/nekobrowser
+cd /root/data/docker_data/nekobrowser
+创建配置文件：
+
+vim docker-compose.yml
+英文输入法下按 i 进入编辑模式后，在这个配置文件的最后加入：
+
+version: "3.4"
+services:
+  neko:
+    image: "m1k1o/neko:firefox"
+    restart: "unless-stopped"
+    shm_size: "2gb"
+    ports:
+      - "38080:8080"  # 使用38080端口，如果冲突了可以换
+      - "52000-52100:52000-52100/udp"
+    environment:
+      NEKO_SCREEN: 1920x1080@30
+      NEKO_PASSWORD: yemengUser  # 普通用户密码
+      NEKO_PASSWORD_ADMIN: yemengAdmin  # 管理员密码
+      NEKO_EPR: 52000-52100
+      NEKO_ICELITE: 1
+按 esc 后，输入:wq 保存退出。
+
+运行：
+
+docker-compose up -d
+4. 反向代理
+你需要完成反向代理并开启 SSL，具体为你的域名 -> 服务器IP：38080，反代可以参考下面两篇文章：
+
+【docker】反向代理神器 ——Nginx Proxy Manager 的安装
+
+【docker】Nginx Proxy Manager 的使用
+
+5. 使用
+访问ip:38080或者是你的域名就可以进入到neko浏览器了，我们使用管理员密码登录：
+
+
+默认界面：
+
+
+基本使用：
+
+
+发布于 2024-04-20 19:27・IP 属地陕西
